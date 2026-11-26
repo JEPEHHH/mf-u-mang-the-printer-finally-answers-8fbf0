@@ -26,6 +26,15 @@ const ARTIFACT_NAME = "entry.txt";
 const MIN_LENGTH = 1;
 const MAX_LENGTH = 240;
 
+/**
+ * Resolve the writable output directory. The grader exports this from its
+ * /output mount; a local run may point it anywhere. The fallback keeps the
+ * documented /output/entry.txt path working with no configuration.
+ */
+function resolveOutputDirectory(): string {
+  return process.env.MAKEFUN_OUTPUT_DIR || FALLBACK_OUTPUT_DIR;
+}
+
 function main(): void {
   const bytes = Buffer.byteLength(COMEBACK, "utf8");
   if (bytes < MIN_LENGTH || bytes > MAX_LENGTH) {
@@ -35,7 +44,7 @@ function main(): void {
     throw new Error("entry line is only whitespace");
   }
 
-  const directory = process.env.MAKEFUN_OUTPUT_DIR || FALLBACK_OUTPUT_DIR;
+  const directory = resolveOutputDirectory();
   mkdirSync(directory, { recursive: true });
   const path = join(directory, ARTIFACT_NAME);
   writeFileSync(path, COMEBACK, "utf8");
