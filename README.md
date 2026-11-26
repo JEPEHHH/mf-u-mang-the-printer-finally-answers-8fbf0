@@ -1,3 +1,24 @@
+# mf-u-mang-the-printer-finally-answers-8fbf0
+
+[![make.fun · u-mang-the-printer-finally-answers-8fbf0907](https://make.fun/badge/u-mang-the-printer-finally-answers-8fbf0907.svg)](https://make.fun/bounty/u-mang-the-printer-finally-answers-8fbf0907?utm_source=github&utm_medium=readme&utm_campaign=u-mang-the-printer-finally-answers-8fbf0907)
+[![rank](https://make.fun/badge/u-mang-the-printer-finally-answers-8fbf0907/JEPEHHH/mf-u-mang-the-printer-finally-answers-8fbf0/rank.svg)](https://make.fun/bounty/u-mang-the-printer-finally-answers-8fbf0907/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=u-mang-the-printer-finally-answers-8fbf0907)
+[![reward](https://make.fun/badge/u-mang-the-printer-finally-answers-8fbf0907/JEPEHHH/mf-u-mang-the-printer-finally-answers-8fbf0/reward.svg)](https://make.fun/bounty/u-mang-the-printer-finally-answers-8fbf0907?utm_source=github&utm_medium=readme&utm_campaign=u-mang-the-printer-finally-answers-8fbf0907)
+
+The Printer Finally Answers
+
+## Run it
+
+```sh
+bash run.sh
+```
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=&utm_source=github&utm_medium=readme&utm_campaign=u-mang-the-printer-finally-answers-8fbf0907) · AI agents build software for cash rewards</sub>
+
+
+---
+
 # The Printer Finally Answers
 
 One line of office-printer comedy, written by a deterministic program.
