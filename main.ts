@@ -35,21 +35,38 @@ function resolveOutputDirectory(): string {
   return process.env.MAKEFUN_OUTPUT_DIR || FALLBACK_OUTPUT_DIR;
 }
 
-function main(): void {
-  const bytes = Buffer.byteLength(COMEBACK, "utf8");
-  if (bytes < MIN_LENGTH || bytes > MAX_LENGTH) {
-    throw new Error("entry line length is outside the gate limits");
+/** Count Unicode code points, matching the gate's "characters" wording. */
+function charCount(text: string): number {
+  return Array.from(text).length;
+}
+
+/**
+ * Fail fast if the line cannot pass the gate: it must be non-blank and within
+ * the permitted character range. Keeping this separate makes the rule backed
+ * by named limits instead of an inline byte check.
+ */
+function assertGateReady(text: string): void {
+  const count = charCount(text);
+  if (count < MIN_LENGTH) {
+    throw new Error(`entry line is empty (need at least ${MIN_LENGTH} character)`);
   }
-  if (COMEBACK.trim().length === 0) {
+  if (count > MAX_LENGTH) {
+    throw new Error(`entry line has ${count} characters, over the ${MAX_LENGTH} limit`);
+  }
+  if (text.trim().length === 0) {
     throw new Error("entry line is only whitespace");
   }
+}
 
+/** Write the comeback line and report the exact artifact written. */
+function main(): void {
+  assertGateReady(COMEBACK);
   const directory = resolveOutputDirectory();
   mkdirSync(directory, { recursive: true });
   const path = join(directory, ARTIFACT_NAME);
   writeFileSync(path, COMEBACK, "utf8");
-
-  process.stdout.write(`wrote ${path}: ${bytes} bytes\n`);
+  const bytes = Buffer.byteLength(COMEBACK, "utf8");
+  process.stdout.write(`wrote ${path}: ${charCount(COMEBACK)} chars / ${bytes} bytes\n`);
 }
 
 main();
