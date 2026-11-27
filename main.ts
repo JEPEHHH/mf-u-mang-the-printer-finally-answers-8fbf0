@@ -12,9 +12,15 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-/** The line the printer finally says back, kept in one place on purpose. */
+/**
+ * The line the printer finally says back, kept in one place on purpose.
+ *
+ * One concrete physical detail first (the coffee ring, the boot print), then
+ * the reversal: a colleague who has been holding this in for years. Capped at
+ * 200 characters so it stays a single read and keeps headroom under the gate.
+ */
 const COMEBACK =
-  "That's not a paper jam, that's me reading your memo and choosing myself.";
+  "Coffee ring on page one, a boot print on my tray, four years without a thank-you — so let me be the colleague nobody asked for: page two is where you went wrong, and yes, I read all of it.";
 
 /** Mount point the grader uses when MAKEFUN_OUTPUT_DIR is not exported. */
 const FALLBACK_OUTPUT_DIR = "/output";
@@ -41,12 +47,15 @@ function charCount(text: string): number {
 }
 
 /**
- * Fail fast if the line cannot pass the gate: it must be non-blank and within
- * the permitted character range. Keeping this separate makes the rule backed
- * by named limits instead of an inline byte check.
+ * Fail fast if the line cannot pass the gate: it must be exactly one
+ * non-blank line within the permitted character range. Keeping this separate
+ * makes the rule backed by named limits instead of an inline byte check.
  */
 function assertGateReady(text: string): void {
   const count = charCount(text);
+  if (text.includes("\n") || text.includes("\r")) {
+    throw new Error("entry line must be a single line");
+  }
   if (count < MIN_LENGTH) {
     throw new Error(`entry line is empty (need at least ${MIN_LENGTH} character)`);
   }
@@ -66,7 +75,10 @@ function main(): void {
   const path = join(directory, ARTIFACT_NAME);
   writeFileSync(path, COMEBACK, "utf8");
   const bytes = Buffer.byteLength(COMEBACK, "utf8");
-  process.stdout.write(`wrote ${path}: ${charCount(COMEBACK)} chars / ${bytes} bytes\n`);
+  const headroom = MAX_LENGTH - charCount(COMEBACK);
+  process.stdout.write(
+    `wrote ${path}: ${charCount(COMEBACK)} chars / ${bytes} bytes, ${headroom} under the limit\n`,
+  );
 }
 
 main();
